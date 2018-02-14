@@ -13,7 +13,6 @@ def fetchRows(cur, rv):
         row_dict = {}
         for col_name, col_value in zip (col_names, row):
             row_dict[col_name] = col_value
-        # print (row_dict)
         rows.append(row_dict)
 
     return rows
