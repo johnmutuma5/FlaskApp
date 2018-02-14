@@ -1,5 +1,5 @@
 from application import app, db
-from application.helpers import fetchRows, NoQueryResultError
+from application.helpers import fetchRows, NoQueryResultException
 from flask import jsonify, request
 import re
 from application.getResturant import findARestaurant
@@ -23,7 +23,7 @@ def restaurant():
     if not request.args:
         cur.execute('''SELECT * FROM restaurants;''')
         rv = cur.fetchall()
-        rows = fetchRows(cur, rv)
+        rows = fetchRows(cur, rv) #rows [{"restaurant_name": "name", "restaurant_address": "address"}, ]
         return jsonify(rows)
 
     # else, limit the return values to the users' query parameters
@@ -41,8 +41,8 @@ def restaurant():
             cur.execute("SELECT post_id FROM restaurants WHERE venue_id=%s", (venue_id,))
             rv = cur.fetchone()
             if not rv:
-                raise Exception("no db match!")
-        except Exception as no_match:
+                raise NoQueryResultException
+        except NoQueryResultException as noMatch:
             cur.execute("INSERT INTO restaurants (restaurant_name, restaurant_address, image, venue_id) "
                         "VALUES (%s, %s, %s, %s)",(venue_name, venue_address, venue_image, venue_id))
             conn.commit()
@@ -69,7 +69,7 @@ def getRestaurantWithId(id):
         rv = cur.fetchmany(1) # fetchone() may not function well with a helper function fetchRows; use fetchmany(1) instead
         print("retrun value fgro db", rv)
         if not rv:
-            raise NoQueryResultError
+            raise NoQueryResultException
         else:
             rows = fetchRows(cur, rv)
 
@@ -90,7 +90,7 @@ def getRestaurantWithId(id):
             conn.commit()
             return re.sub(r'[\[\]\']', '', '''Updated entry as Restaurant Name to {name:}'''.format(**request.args))
 
-    except NoQueryResultError as noMatch:
+    except NoQueryResultException as noMatch:
         return noMatch.msg
     finally:
         conn.close()
