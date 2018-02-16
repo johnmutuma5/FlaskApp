@@ -11,7 +11,7 @@ import sys
 sys.stdout = codecs.getwriter('utf8')(sys.stdout.detach())
 sys.stderr = codecs.getwriter('utf8')(sys.stderr.detach())
 '''
-sys.stdout = open(sys.stdout.fileno(), 'w', encoding='utf-8')
+sys.stdout = open(sys.stdout.fileno(), 'w', encoding='utf-16')
 
 foursquare_client_id = "W2YJR5A34YRDQEHOPVSHZF32SG3S0QUR2BEWGFCYYH1IR4J3"
 foursquare_client_secret = "RZW44YWO5KEVDG0H0DQJH5ZE43QPSSPVLGYQKAU3YHMTYN0Z"

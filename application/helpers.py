@@ -1,6 +1,6 @@
 class NoQueryResultException (Exception):
     def __init__ (self):
-        msg = "Oops! Seems like we cannot find any result for your query"
+        self.msg = "Oops! Seems like we cannot find any result for your query"
 
 
 def fetchRows(cur, rv):

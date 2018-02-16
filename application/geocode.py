@@ -12,4 +12,4 @@ def getGeocodeLocation(location):
     content = json.loads(content.decode('utf8'))
 
     location = content['results'][0]['geometry']['location']
-    return(location['lat'], location['lng'])
+    return (location['lat'], location['lng'])
